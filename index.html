@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>围术期监护 · 困难气道 / CICO</title><style>html,body{margin:0;min-height:100%;background:#070d13}body{padding:0}#airway-monitor{min-height:100dvh;border-radius:0!important}#airway-monitor:fullscreen{min-height:100dvh}#airway-monitor [data-id="fullscreen"]{background:#186380;border-color:#80d8f3;font-weight:600}</style></head>
+<body>
+<div id="airway-monitor">
+<style>
+#airway-monitor{font-family:system-ui,-apple-system,sans-serif;color:#e4edf5;background:#070d13;border:1px solid #293947;border-radius:14px;overflow:hidden;color-scheme:dark}#airway-monitor *{box-sizing:border-box}#airway-monitor header{padding:15px 20px;background:#111d28;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}#airway-monitor .brand{font-size:16px;font-weight:600}#airway-monitor .sub{font-size:12px;color:#a4b4c4;margin-top:4px}#airway-monitor .clock{font:18px ui-monospace,monospace;color:#bbcbd8}#airway-monitor .alarm{padding:10px 20px;min-height:40px;background:#15272a;color:#a5d8c8;font-size:14px}#airway-monitor .alarm.warn{background:#463914;color:#ffda72}#airway-monitor .alarm.high{background:#5b2024;color:#ffe3e3}#airway-monitor .display{display:grid;grid-template-columns:minmax(0,1fr) 240px}#airway-monitor .waves{min-width:0;display:grid;grid-template-rows:repeat(3,150px)}#airway-monitor .wave{position:relative;border-bottom:1px solid #1a2833;overflow:hidden}#airway-monitor canvas{display:block;width:100%;height:100%}#airway-monitor .label{z-index:1;position:absolute;top:10px;left:14px;font:12px ui-monospace,monospace}#airway-monitor .scale{z-index:1;position:absolute;bottom:8px;right:12px;font-size:11px;color:#9daebc}#airway-monitor .numbers{border-left:1px solid #293947;display:grid;grid-template-rows:repeat(5,90px)}#airway-monitor .metric{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 16px;border-bottom:1px solid #20303c}#airway-monitor .name{font-size:13px}#airway-monitor .unit{font-size:11px;color:#9daebc;margin-top:5px}#airway-monitor .value{font:500 46px ui-monospace,monospace;letter-spacing:-2px;white-space:nowrap}#airway-monitor .bp{font-size:30px;letter-spacing:-1px}#airway-monitor .ecg{color:#64ed99}#airway-monitor .co2{color:#ffe076}#airway-monitor .pleth{color:#69dfee}#airway-monitor .temp{color:#ef9bc4}#airway-monitor .vent{padding:12px 20px;display:flex;gap:12px 26px;flex-wrap:wrap;background:#101c26;border-top:1px solid #293947;font-size:13px}#airway-monitor .vent strong{color:#ffe076;font-weight:500}#airway-monitor .toolbar{padding:13px 18px;border-top:1px solid #293947;display:flex;align-items:center;gap:10px;flex-wrap:wrap}#airway-monitor button{padding:10px 12px;min-height:42px;border:1px solid #415464;border-radius:7px;background:#172733;color:#dce9f2;font:13px system-ui;cursor:pointer}#airway-monitor button:hover{background:#243d4d}#airway-monitor button[aria-pressed=true]{border-color:#72d0ee;background:#1a4658;color:white}#airway-monitor button:focus-visible{outline:2px solid #b8ebff;outline-offset:2px}#airway-monitor .scenes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0 18px 14px}#airway-monitor .scenes button{text-align:left;line-height:1.5}#airway-monitor .scenes small{display:block;font-size:11px;color:#a5bbcb}#airway-monitor .director{font-size:12px;color:#b5c5d2;padding:0 18px 12px;line-height:1.6}#airway-monitor .director strong{color:#e0ecf4}#airway-monitor details{border-top:1px solid #293947;padding:12px 18px;font-size:12px;color:#aabcca;line-height:1.7}#airway-monitor summary{cursor:pointer}#airway-monitor .lab{margin-top:8px;color:#d9e7f1}#airway-monitor .volume{display:flex;align-items:center;gap:6px;font-size:12px;color:#b3c7d5}#airway-monitor input{width:85px}#airway-monitor .hint{font-size:12px;color:#a5bbcb}#airway-monitor.immersed .scenes,#airway-monitor.immersed .director,#airway-monitor.immersed details,#airway-monitor.immersed .scene-heading{display:none}
+@media(max-width:570px){#airway-monitor .display{grid-template-columns:minmax(0,1fr) 140px}#airway-monitor .numbers{grid-template-rows:repeat(5,78px)}#airway-monitor .waves{grid-template-rows:repeat(3,130px)}#airway-monitor .metric{padding:8px;gap:3px}#airway-monitor .value{font-size:30px;letter-spacing:-1px}#airway-monitor .bp{font-size:21px}#airway-monitor .name{font-size:11px}#airway-monitor .unit{font-size:11px}#airway-monitor .scenes{grid-template-columns:repeat(2,minmax(0,1fr))}#airway-monitor header{padding:12px}#airway-monitor .scale{font-size:11px}#airway-monitor .vent{padding:12px}}
+#airway-monitor .alarm-red{color:#ff6666}#airway-monitor .alarm-blink{animation:airway-alert 1s steps(1,end) infinite}@keyframes airway-alert{0%,100%{opacity:1}50%{opacity:.28}}@media(prefers-reduced-motion:reduce){#airway-monitor .alarm-blink{animation:none;text-decoration:underline}}
+#airway-monitor:fullscreen{width:100%;height:100%;overflow:auto;border:0;border-radius:0;padding:12px;display:flex;flex-direction:column}#airway-monitor:fullscreen .display{flex:1;min-height:390px;grid-template-columns:minmax(0,1fr) clamp(180px,24vw,340px)}#airway-monitor:fullscreen .waves{grid-template-rows:repeat(3,minmax(0,1fr))}#airway-monitor:fullscreen .numbers{grid-template-rows:repeat(5,minmax(0,1fr))}#airway-monitor:fullscreen .value{font-size:clamp(32px,5vw,76px)}#airway-monitor:fullscreen .bp{font-size:clamp(24px,3.4vw,48px)}#airway-monitor .fullscreen-status{padding:0 18px;color:#ffda72;font-size:12px}#airway-monitor .fullscreen-status:empty{display:none}
+</style>
+<header><div><div class="brand">围术期监护 · 困难气道 / CICO</div><div class="sub">病例三 · 男性62岁 · 喉部肿物手术 · 颈部放疗史　｜　教学原型 v0.2</div></div><div class="clock" data-id="clock">00:00</div></header>
+<div class="alarm" data-id="alarm" role="status">监护中 · 当前无报警</div>
+<div class="display">
+ <div class="waves">
+  <div class="wave"><span class="label ecg">II　ECG</span><canvas data-wave="ecg" aria-label="心电波形"></canvas><span class="scale">动态扫屏</span></div>
+  <div class="wave"><span class="label co2">CO₂　mmHg</span><canvas data-wave="co2" aria-label="呼气二氧化碳波形，固定0至80毫米汞柱"></canvas><span class="scale">0—80 mmHg</span></div>
+  <div class="wave"><span class="label pleth">PLETH</span><canvas data-wave="pleth" aria-label="血氧容积波形"></canvas><span class="scale">相对幅度</span></div>
+ </div>
+ <div class="numbers">
+  <div class="metric ecg"><div><div class="name">HR</div><div class="unit">次/分</div></div><div class="value" data-id="hr">80</div></div>
+  <div class="metric pleth"><div><div class="name">SpO₂</div><div class="unit">%</div></div><div class="value" data-id="spo">99</div></div>
+  <div class="metric"><div><div class="name">BP</div><div class="unit">mmHg</div></div><div><div class="value bp" data-id="bp">130/78</div><div class="unit" data-id="bpType">NIBP · 教学模拟</div><div class="unit" data-id="bpAge">0秒前</div></div></div>
+  <div class="metric co2"><div><div class="name">EtCO₂</div><div class="unit">mmHg</div></div><div class="value" data-id="et">36</div></div>
+  <div class="metric temp"><div><div class="name">核心温</div><div class="unit">℃</div></div><div class="value" data-id="temp">36.7</div></div>
+ </div>
+</div>
+<div class="vent"><span>通气状态：<strong data-id="vent">正常</strong></span><span data-id="ventNote">诱导前 · 教学基线</span></div>
+<div class="toolbar"><button type="button" data-id="sound" aria-pressed="false">开启声音</button><label class="volume">音量<input data-id="volume" type="range" min="0" max="100" value="30" aria-label="声音音量"></label><button type="button" data-id="immersive" aria-pressed="false">隐藏导演控件</button><span class="hint scene-heading">导演切换 · 场景持续保持</span></div>
+<div class="fullscreen-status" data-id="fullscreenStatus" role="status"></div>
+<div class="scenes" aria-label="选择演练阶段">
+<button type="button" data-scene="baseline" aria-pressed="true">平稳基线<small>教学预设 · HR80 / SpO₂99%</small></button>
+<button type="button" data-scene="intubation" aria-pressed="false">插管失败 · Plan A<small>两次失败 · 口腔少量出血</small></button>
+<button type="button" data-scene="failure" aria-pressed="false">通气失败 · Plan B / C<small>无有效CO₂波形 · HR132 · BP185/110</small></button>
+<button type="button" data-scene="critical" aria-pressed="false">严重低氧 · 心率减慢<small>HR56 / SpO₂23% · BP80/45</small></button>
+<button type="button" data-scene="lost" aria-pressed="false">血氧无法显示<small>SpO₂ — · HR41 · BP55/32</small></button>
+<button type="button" data-scene="recovery" aria-pressed="false">确认有效气道 · 恢复<small>EtCO₂波形恢复 · 30秒至92%</small></button>
+</div>
+<div class="director" data-id="note" aria-live="polite">平稳基线。等待导师启动演练。</div>
+<details><summary>导师资料 · 病例与参数来源（待医学审核）</summary>
+<div class="lab" data-id="lab">62岁男性，喉部肿物切除术；颈部放疗史、颈部活动受限。</div>
+<p>来源：AKB《意外困难气道危机演练题干》病例三，v1.0，source-material / not_appraised。题干节点：两次插管失败；声门上气道无EtCO₂波形、面罩阻力极高；HR132降至56，SpO₂23%后无法显示；有效气道建立后30秒内SpO₂升至92%。</p>
+<p>教学补充：基线HR80、SpO₂99%、BP130/78、EtCO₂36、核心温36.7℃；中间HR110/SpO₂90%与HR132/SpO₂60%，恢复HR90/EtCO₂35。BP依场景按130/78→160/95→185/110→80/45→55/32变化，恢复至110/65 mmHg；185/110与55/32为用户指定，其他血压为教学补充，均非题干实测值。体温保持预设。血压与心率不是固定生理换算关系。NIBP采用压缩测量演示：切换后保留旧读数，8秒后显示新测量；恢复阶段每10秒更新一次，共30秒，此后每30秒更新。低灌注时真实袖带可能测量失败，本演示不模拟其成功率。非恢复阶段8秒过渡；恢复阶段30秒。HR&gt;100或&lt;60、SpO₂&lt;90%为演示报警设定，并非经审核的临床规则。</p>
+<p>仅用于模拟教学，不接入患者，不用于诊疗。波形为示意、声音为通用合成音，非特定品牌原声；无CO₂波形不等于血中CO₂为零，也不能单独诊断CICO。23%为题干演示数值。恢复按钮须由导师确认有效气道后触发，不保证操作成功或临床恢复时间。</p></details>
+<script>
+(()=>{
+ const root=document.getElementById('airway-monitor');
+ const cachedElements=new Map();
+ const el=k=>{if(!cachedElements.has(k))cachedElements.set(k,root.querySelector('[data-id="'+k+'"]'));return cachedElements.get(k);};
+ const base={hr:80,spo:99,sbp:130,dbp:78,et:36,temp:36.7,rr:12};
+ const scenes={
+ baseline:{v:{...base},co2:true,spoValid:true,vent:'基线',ventNote:'诱导前 · 呼吸监测示意',note:'基线为教学补充设定；由导师开始切换场景。',lab:'62岁男性，喉部肿物切除术；颈部放疗史、颈部活动受限。'},
+ intubation:{v:{...base,hr:110,sbp:160,dbp:95,spo:90,et:0},co2:false,spoValid:true,vent:'插管未成功',ventNote:'Plan A · 由导师释放体征',note:'两次插管失败，口腔少量出血。此阶段HR110及SpO₂90%为教学过渡设定。',lab:'题干未提供本阶段的具体监护数值。'},
+ failure:{v:{...base,hr:132,sbp:185,dbp:110,spo:60,et:0},co2:false,spoValid:true,vent:'无有效通气',ventNote:'Plan B / C · 无有效CO₂波形',note:'声门上气道置入后无EtCO₂波形；面罩通气阻力极高。HR132来自题干，SpO₂60%为教学过渡值。',lab:'体征由导师释放，不能仅凭无CO₂波形判断CICO。'},
+ critical:{v:{...base,hr:56,sbp:80,dbp:45,spo:23,et:0},co2:false,spoValid:true,vent:'无有效通气',ventNote:'严重低氧 · 心动过缓',note:'题干节点：HR降至56，SpO₂降至23%。观察团队识别并宣布CICO、呼叫紧急颈前气道器械包。',lab:'HR56与SpO₂23%为题干演示值，不是患者实时读数。'},
+ lost:{v:{...base,hr:41,sbp:55,dbp:32,spo:23,et:0},co2:false,spoValid:false,vent:'无有效通气',ventNote:'血氧信号不可用 · 心电仍监测',note:'SpO₂无法显示，显示“—”而非0%；血氧容积波形停止。心率继续下降，最低41次/分并保持，为本次用户指定教学设定。',lab:'HR41为用户指定的演练设定，非原题干数值；BP55/32为用户指定教学设定，表示本演练的严重循环失代偿，不加入停搏。'},
+ recovery:{v:{...base,hr:90,sbp:110,dbp:65,spo:92,et:35},co2:true,spoValid:true,vent:'有效通气已确认',ventNote:'导师确认后触发 · 30秒恢复段',note:'导师确认已建立有效气道：立即恢复CO₂波形；SpO₂按题干在30秒内回升至92%。HR90及EtCO₂35为教学设定。',lab:'该按钮是情景结果卡，不模拟操作成功率，也不提供有创操作指引。'}
+ };
+ let key='baseline',v={...base},from={...base},sceneElapsed=0,last=performance.now(),elapsed=0,beatPhase=0,breathPhase=0,nextAlarm=0,alarmLevel=0;
+ let bpReading={sbp:base.sbp,dbp:base.dbp,at:0},nextBpAt=30;
+ let audio=null,master=null,sound=false,active=new Set();
+ const clamp=x=>Math.max(0,Math.min(1,x)),mix=(a,b,p)=>a+(b-a)*p;
+ function stopAudio(){for(const o of active){try{o.stop();}catch(e){}}active.clear();nextAlarm=0;}
+ async function enable(){const C=window.AudioContext||window.webkitAudioContext;if(!C)throw Error('当前环境不支持声音');if(!audio){audio=new C();master=audio.createGain();master.connect(audio.destination);}await audio.resume();master.gain.value=Number(el('volume').value)/100;sound=true;el('sound').textContent='静音';el('sound').setAttribute('aria-pressed','true');}
+ function beep(freq,len,vol,delay=0,alarm=false){if(!sound||audio.state!=='running')return;const t=audio.currentTime+delay,g=audio.createGain();g.connect(master);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.012);g.gain.setValueAtTime(vol*.75,t+len*.6);g.gain.exponentialRampToValueAtTime(.0001,t+len);const harmonics=alarm?[1,.38,.23,.15]:[1,.14];harmonics.forEach((amp,i)=>{const o=audio.createOscillator(),h=audio.createGain();o.frequency.value=freq*(i+1);h.gain.value=amp/harmonics.length;o.connect(h).connect(g);active.add(o);o.onended=()=>{active.delete(o);o.disconnect();h.disconnect();};o.start(t);o.stop(t+len+.015);});setTimeout(()=>g.disconnect(),(delay+len+.1)*1000);}
+ function pulse(){const valid=scenes[key].spoValid;beep(valid?Math.max(300,660*Math.pow(2,(v.spo-99)/35)):660,.09,.23);}
+ function alarm(level){const offsets=level===2?[0,.19,.38,.73,.92,1.5,1.69,1.88,2.23,2.42]:[0,.28,.56];offsets.forEach((d,i)=>beep(i%3===2?660:780,.16,level===2?.32:.23,d,true));}
+ function choose(k){key=k;from={...v};sceneElapsed=0;nextBpAt=k==='recovery'?10:8;stopAudio();root.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scene===k)));el('note').textContent=scenes[k].note+' 血压目标：'+scenes[k].v.sbp+'/'+scenes[k].v.dbp+' mmHg（教学设定，非题干实测）。';el('lab').textContent=scenes[k].lab;if(k==='baseline'){bpReading={sbp:base.sbp,dbp:base.dbp,at:elapsed};nextBpAt=30;v={...base};from={...base};buffers.forEach(b=>b.data=[]);}if(!scenes[k].co2)buffers[1].data=[];if(!scenes[k].spoValid)buffers[2].data=[];}
+ root.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.scene)));
+ el('sound').addEventListener('click',async()=>{if(sound){sound=false;stopAudio();el('sound').textContent='开启声音';el('sound').setAttribute('aria-pressed','false');}else{try{await enable();pulse();}catch(e){el('sound').textContent='声音不可用 · 请用浏览器打开';}}});
+ el('volume').addEventListener('input',()=>{if(master)master.gain.setTargetAtTime(Number(el('volume').value)/100,audio.currentTime,.02);});
+ el('immersive').addEventListener('click',()=>{const hide=root.classList.toggle('immersed');el('immersive').textContent=hide?'显示导演控件':'隐藏导演控件';el('immersive').setAttribute('aria-pressed',String(hide));});
+ const fullButton=document.createElement('button');fullButton.type='button';fullButton.textContent='全屏';fullButton.setAttribute('data-id','fullscreen');fullButton.setAttribute('aria-pressed','false');el('immersive').after(fullButton);
+ function syncFullscreen(){const on=document.fullscreenElement===root;fullButton.textContent=on?'退出全屏（Esc）':'全屏';fullButton.setAttribute('aria-pressed',String(on));}
+ fullButton.addEventListener('click',async()=>{
+   el('fullscreenStatus').textContent='';
+   try{if(document.fullscreenElement===root){await document.exitFullscreen();}else{if(!root.requestFullscreen||document.fullscreenEnabled===false)throw Error('unavailable');await root.requestFullscreen();}syncFullscreen();}
+   catch(e){el('fullscreenStatus').textContent='当前内联环境未开放全屏权限。请用Chrome或Edge打开此HTML文件后点击全屏。';syncFullscreen();}
+ });
+ document.addEventListener('fullscreenchange',syncFullscreen);
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.fullscreenElement===root){document.exitFullscreen().catch(()=>{});}});
+ // Browsers handle Esc natively; keep the button in sync after exit.
+ // SVG publishes one path per trace per frame, avoiding thousands of bridged canvas RPCs.
+ const ns='http://www.w3.org/2000/svg';
+ const buffers=Array.from(root.querySelectorAll('canvas')).map(c=>{
+   const type=c.dataset.wave,svg=document.createElementNS(ns,'svg'),path=document.createElementNS(ns,'path');
+   svg.setAttribute('role','img');svg.setAttribute('aria-label',c.getAttribute('aria-label'));svg.setAttribute('preserveAspectRatio','none');
+   svg.style.cssText='position:absolute;inset:0;display:block;width:100%;height:100%;background-image:linear-gradient(#16242d 1px,transparent 1px),linear-gradient(90deg,#16242d 1px,transparent 1px);background-size:24px 24px';
+   path.setAttribute('fill','none');path.setAttribute('stroke',type==='ecg'?'#64ed99':type==='co2'?'#ffe076':'#69dfee');path.setAttribute('stroke-width','1.8');path.setAttribute('vector-effect','non-scaling-stroke');
+   svg.appendChild(path);c.replaceWith(svg);return {c:svg,path,type,data:[],w:500,h:150};
+ });
+ function gauss(x,m,s){return Math.exp(-Math.pow((x-m)/s,2)/2);}
+ function ecg(p){return .1*gauss(p,.12,.023)-.13*gauss(p,.245,.012)+gauss(p,.28,.016)-.22*gauss(p,.34,.016)+.25*gauss(p,.58,.05);}
+ // Reference silhouette: short rounded upstroke, gently rising alveolar plateau,
+ // rapid rounded downstroke, then a flat zero baseline. Peak remains normalized to 1.
+ function co2(p){const smooth=x=>x*x*(3-2*x);if(p<.15)return 0;if(p<.20)return .94*smooth((p-.15)/.05);if(p<.65)return .94+.06*(p-.20)/.45;if(p<.69)return 1-smooth((p-.65)/.04);return 0;}
+ function pleth(p){p=(p+.83)%1;return p<.16?Math.sin(p/.16*Math.PI/2):Math.exp(-(p-.16)*5)+.10*gauss(p,.40,.035);}
+ // Size outside ResizeObserver delivery; absolute SVGs cannot affect parent layout.
+ let lastSizeCheck=-Infinity;
+ function syncWaveSizes(now){if(now-lastSizeCheck<250)return;lastSizeCheck=now;
+   const sizes=buffers.map(b=>({w:Math.max(1,b.c.parentElement.clientWidth),h:Math.max(1,b.c.parentElement.clientHeight)}));
+   buffers.forEach((b,i)=>{const {w,h}=sizes[i];if(w!==b.w||h!==b.h){b.w=w;b.h=h;b.c.setAttribute('viewBox','0 0 '+w+' '+h);}});
+ }
+ buffers.forEach(b=>b.c.setAttribute('viewBox','0 0 500 150'));
+ function draw(b){
+   const points=[];let bucket=-1,min=null,max=null;
+   function flush(){if(!min)return;const pair=min.t<=max.t?[min,max]:[max,min];for(const d of pair){const x=b.w-(elapsed-d.t)*55,y=b.h*.79-d.y*b.h*.57;points.push(x.toFixed(1)+','+y.toFixed(1));}}
+   for(const d of b.data){const x=b.w-(elapsed-d.t)*55;if(x<0)continue;const bin=Math.floor(x);if(bin!==bucket){flush();bucket=bin;min=max=d;}else{if(d.y<min.y)min=d;if(d.y>max.y)max=d;}}flush();
+   b.path.setAttribute('d',points.length?'M'+points.join('L'):'');
+ }
+ let nextSample=0,lastUi=0,lastPaint=0;
+ function frame(now){if(!root.isConnected){stopAudio();if(audio)audio.close();return;}const dt=Math.min(.1,(now-last)/1000);last=now;if(!document.hidden){syncWaveSizes(now);elapsed+=dt;sceneElapsed+=dt;const secs=sceneElapsed,sc=scenes[key];const target=sc.v;let p=clamp(secs/(key==='recovery'?30:8));if(key!=='recovery')p=p*p*(3-2*p);Object.keys(base).forEach(k=>v[k]=mix(from[k],target[k],p));const prev=beatPhase;beatPhase=(beatPhase+dt*v.hr/60)%1;if(beatPhase<prev)pulse();breathPhase=(breathPhase+dt*v.rr/60)%1;
+ // Fixed 1 kHz waveform samples prevent frame timing from clipping alternate R peaks.
+ if(nextSample<elapsed-.1)nextSample=elapsed-.1;
+ while(nextSample<=elapsed){const age=elapsed-nextSample,bp=(beatPhase-age*v.hr/60+1)%1,rp=(breathPhase-age*v.rr/60+1)%1;const ys=[ecg(bp),sc.co2?co2(rp)*sc.v.et/80:0,sc.spoValid?pleth(bp)*Math.max(.12,v.spo/99):0];buffers.forEach((b,i)=>b.data.push({t:nextSample,y:ys[i]}));nextSample+=.001;}
+ buffers.forEach(b=>{const cutoff=elapsed-Math.max(2,Math.min(20,b.w/55+1));let n=0;while(n<b.data.length&&b.data[n].t<cutoff)n++;if(n)b.data.splice(0,n);});
+ if(now-lastPaint>=50){buffers.forEach(draw);lastPaint=now;}
+ if(now-lastUi>150){lastUi=now;const hr=Math.round(v.hr),spo=Math.round(v.spo);el('hr').textContent=hr;el('spo').textContent=sc.spoValid?spo:'—';if(secs>=nextBpAt){bpReading={sbp:Math.round(v.sbp),dbp:Math.round(v.dbp),at:elapsed};nextBpAt+=(key==='recovery'&&nextBpAt<30)?10:30;}el('bp').textContent=bpReading.sbp+'/'+bpReading.dbp;el('bpAge').textContent=Math.floor(elapsed-bpReading.at)+'秒前'+(secs<nextBpAt&&nextBpAt<31?' · 测量中':'');el('et').textContent=sc.co2?sc.v.et:'—';el('temp').textContent='36.7';
+ const hrAlarm=hr>100||hr<60,spoAlarm=sc.spoValid&&spo<90;
+ for(const [id,on] of [['hr',hrAlarm],['spo',spoAlarm||!sc.spoValid]]){el(id).classList.toggle('alarm-red',on);el(id).classList.toggle('alarm-blink',on);}
+ el('vent').textContent=sc.vent;el('ventNote').textContent=sc.ventNote+(key==='recovery'?' · '+Math.min(30,Math.floor(secs))+'/30秒':'');
+ el('clock').textContent=String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(Math.floor(elapsed%60)).padStart(2,'0');
+ const high=!sc.spoValid||(sc.spoValid&&spo<80)||hr<60,warn=hrAlarm||spoAlarm||!sc.co2,level=high?2:warn?1:0;
+ if(level!==alarmLevel){stopAudio();alarmLevel=level;}
+ const messages=[!sc.co2?'无有效CO₂波形':'',!sc.spoValid?'SpO₂信号不可用（脉搏音转ECG）':spoAlarm?'SpO₂低':'',hr>100?'HR高':hr<60?'HR低':''].filter(Boolean);
+ const alarmBar=el('alarm');alarmBar.className='alarm'+(high?' high':warn?' warn':'');alarmBar.textContent=messages.length?'模拟报警 · '+messages.join(' / '):'监护中 · 当前无报警';
+ }
+ if(sound&&alarmLevel&&elapsed>=nextAlarm){alarm(alarmLevel);nextAlarm=elapsed+(alarmLevel===2?7:8);}}
+ requestAnimationFrame(frame);}
+ document.addEventListener('visibilitychange',()=>{stopAudio();if(document.hidden&&audio)audio.suspend();else if(sound&&audio)audio.resume().catch(()=>{});last=performance.now();});
+ requestAnimationFrame(frame);
+})();
+</script>
+</div>
+
+</body>
+</html>
+
