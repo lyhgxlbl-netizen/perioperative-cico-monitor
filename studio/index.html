@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>围术期情景模拟工作台</title><link rel="stylesheet" href="studio.css"><link rel="stylesheet" href="intervention.css"></head>
+<body><main id="studio">
+<header class="studio-header"><div><div class="eyebrow">L&L AI STUDIO / RESIDENCY TRAINING</div><h1>围术期情景模拟工作台 <small>v0.5.1 本地原型</small></h1></div><label class="case-picker">病例库<select id="caseSelect" aria-label="选择病例"></select></label></header>
+<nav class="studio-nav" aria-label="工作区"><button data-tab="monitor" aria-pressed="true">演练监护</button><button data-tab="editor" aria-pressed="false">病例编辑</button><button data-tab="review" aria-pressed="false">记录与评价</button><button data-tab="importer" aria-pressed="false">病例识别</button><span id="caseStatus">教学草案</span></nav>
+<p id="notice" role="status" class="notice">正在载入病例…</p>
+<section id="panel-monitor" class="panel"><div id="monitorShell">
+<header class="monitor-header"><div><h2 id="caseTitle"></h2><p id="patient"></p></div><div class="clock"><span id="clock">00:00</span><small id="stageClock">阶段 0秒</small></div></header>
+<div id="alarm" class="alarm" role="status"></div>
+<div class="display">
+<div class="wave"><span class="wave-label ecg">II · ECG</span><svg id="wave-ecg" role="img" aria-label="心电示意波形"><path/></svg><small>固定幅度 · 示意</small></div><div class="metric ecg"><span>HR<small>次/分</small></span><strong id="hr">—</strong></div>
+<div class="wave"><span class="wave-label art" id="bpWaveLabel">ART</span><svg id="wave-art" role="img" aria-label="有创动脉压示意波形"><path/></svg><small id="artScale">未启用</small></div><div class="metric art"><span id="bpLabel">BP</span><div><strong id="bp" class="bp">—</strong><small id="bpDetail"></small></div></div>
+<div class="wave"><span class="wave-label pleth">SpO₂ · PLETH</span><svg id="wave-pleth" role="img" aria-label="血氧脉搏容积示意波形"><path/></svg><small id="signalLabel">信号可读</small></div><div class="metric pleth"><span>SpO₂<small>%</small></span><strong id="spo">—</strong></div>
+<div class="wave"><span class="wave-label co2">CO₂</span><svg id="wave-co2" role="img" aria-label="梯形呼气末二氧化碳示意波形"><path/></svg><small id="co2Scale">mmHg</small></div><div class="metric co2"><span>EtCO₂<small>mmHg</small></span><strong id="et">—</strong></div>
+<div class="vent-row"><span>通气状态 <b id="vent"></b></span><span>RR <b id="rr"></b> 次/分（设定）</span></div><div class="metric airway-pressure"><span>气道峰压<small>Ppeak · cmH₂O</small><small>场景值</small></span><strong id="ppeak">—</strong></div>
+<div class="monitor-context"><small id="monitorState"></small></div><div class="metric temp"><span>核心温<small>℃</small></span><strong id="temp">—</strong></div>
+</div>
+<div class="monitor-toolbar"><button id="sound" aria-pressed="false">开启声音</button><label>音量<input type="range" id="volume" min="0" max="100" value="25" aria-label="音量"></label><button id="pause" aria-pressed="false">暂停</button><button id="fullscreen" aria-pressed="false">全屏</button><button id="hideDirector" aria-pressed="false">收起导师侧栏</button></div>
+<section id="director" class="director"><div class="section-title"><h3>导师控制</h3><span id="eventPosition"></span></div><div id="events" class="events"></div>
+<div class="controls"><label>事件内节点<select id="nodeSelect"></select></label><button id="nextNode">确认下一节点</button><button id="actionButton" hidden></button><button id="reset">重置本场</button></div>
+<p id="brief" class="brief"></p><div class="controls"><label>血氧信号<select id="quality"><option value="case">按病例设置</option><option value="poor">信号差／不可靠</option><option value="lost">无法显示</option></select></label><button id="variation" aria-pressed="false">轻度波动：关</button><button id="recognize">记录异常已识别</button></div>
+<div class="result-grid"><section class="result-card"><div class="section-title"><h3>导师结果卡</h3><span id="cardCount"></span></div><p id="cardText"></p><label class="check"><input type="checkbox" id="confirmed">已核实相应操作、采样或检测等待时点</label><label class="check"><input type="checkbox" id="override">导师覆盖节点限制</label><label>覆盖理由<input id="overrideReason" maxlength="160" placeholder="覆盖时必须填写"></label><p id="gate" class="muted"></p><button id="releaseCard">释放下一结果卡</button></section><section class="result-card"><h3>关键动作观察记录</h3><p class="muted">由导师勾选已观察到的行为；不代表系统自动识别。</p><div id="observedActions"></div></section></div>
+</section></div></section>
+<section id="panel-editor" class="panel light-panel" hidden>
+<div class="section-title"><div><h2>病例编辑</h2><p class="muted">复制一个病例开始，调整事件和参数。应用后以新配置重置演练，声音关闭。</p></div><div class="controls"><button id="duplicateCase">复制当前病例</button><button id="newCase">新建空白病例</button></div></div>
+<div class="form-grid"><label>病例名称<input id="editTitle" maxlength="100"></label><label>病例背景（教学化描述）<input id="editPatient" maxlength="250"></label><label class="wide">参数来源与补充说明<textarea id="editSources" rows="2" maxlength="6000"></textarea></label></div>
+<div class="editor-columns"><aside><div class="section-title"><h3>事件</h3><button id="addEvent">＋事件</button></div><select id="editEvent" size="8" aria-label="编辑事件"></select><div class="controls"><button id="eventUp">上移</button><button id="eventDown">下移</button><button id="removeEvent">删除</button></div></aside>
+<div><div class="form-grid"><label>事件名称<input id="editEventTitle" maxlength="100"></label><label class="check"><input type="checkbox" id="editRecognition">本事件开始时启动异常识别计时</label><label class="wide">导师提示<textarea id="editBrief" rows="2" maxlength="4000"></textarea></label></div>
+<div class="controls"><label>事件内节点<select id="editNode"></select></label><button id="addNode">＋节点</button><button id="cloneNode">复制节点</button><button id="removeNode">删除节点</button></div>
+<div class="form-grid"><label>节点名称<input id="editNodeLabel" maxlength="100"></label><label>过渡时间（秒）<input id="editDuration" type="number" min="0" max="3600" step="0.1"></label><label>参数变化曲线<select id="editCurve"><option value="smooth">平滑</option><option value="linear">线性</option></select></label><label>完成后触发<select id="editAuto"><option value="false">保持，等待导师</option><option value="true">计时结束进入下一节点</option><option value="action">导师记录动作后进入下一节点</option></select></label><label class="wide">动作触发名称（须与本事件动作清单某行相同）<input id="editTriggerAction" maxlength="200"></label></div>
+<h3>生命体征目标</h3><div id="vitalFields" class="vital-fields"></div>
+<div class="form-grid"><label>血压显示<select id="editBpMode"><option value="nibp">NIBP袖带分次测量</option><option value="art">ART有创压力</option><option value="scenario">情景固定结果值</option></select></label><label>袖带首次读数等待（秒）<input type="number" id="editBpFirst" min="0" max="600"></label><label>后续测量间隔（秒）<input type="number" id="editBpInterval" min="1" max="600"></label><label>心电形态<select id="editMorphology"><option value="0">正常窦性示意</option><option value="1">高钾形态示意</option></select></label><label>体温更新<select id="editTempMode"><option value="interpolate">随节点时间变化</option><option value="step">切换时点直接采用场景值</option></select></label><label>通气状态描述<input id="editVent" maxlength="200"></label></div>
+<div class="controls"><label class="check"><input type="checkbox" id="editCo2">显示CO₂监测</label><label class="check"><input type="checkbox" id="editCo2Expected">本节点应有有效CO₂信号</label><label class="check"><input type="checkbox" id="editCo2Instant">CO₂恢复时立即显示目标</label><label class="check"><input type="checkbox" id="editSpoValid">SpO₂信号可读</label><label class="check"><input type="checkbox" id="editTempOn">核心温已监测</label></div>
+<h3>本事件结果卡</h3><p class="muted">首张卡进入事件即显示，后续卡须导师逐次确认；“最低节点”为结果允许释放的最早位置。</p><div id="editCards"></div><button id="addCard">＋结果卡</button>
+<label class="block-label">关键动作清单（每行一项）<textarea id="editActions" rows="3" maxlength="3000" placeholder="填写本事件需要观察并记录的动作"></textarea></label>
+</div></div>
+<details><summary>高级设置：病例报警条件（JSON）</summary><p class="muted">保留原病例的教学报警。字段、比较符和条件仅用于教学显示，编辑后会校验。</p><textarea id="editRules" rows="9" spellcheck="false" aria-label="报警规则JSON"></textarea></details>
+<div class="editor-actions"><button id="applyCase" class="primary">应用并预览</button><button id="saveCase">保存当前编辑到本机</button><button id="exportCase">导出病例JSON</button><label class="file-button">导入病例JSON<input type="file" id="importCase" accept=".json,application/json"></label><button id="restoreDraft">放弃未应用编辑</button></div>
+<p id="editorError" role="alert"></p><p class="muted">本机保存受浏览器存储权限影响；导出文件可跨设备备份。编辑器不接入真实患者。</p>
+</section>
+<section id="panel-review" class="panel light-panel" hidden><div class="section-title"><h2>记录与评价</h2><div class="controls"><button id="reviewCurrent" hidden>返回当前场次</button><button id="exportSession">导出演练与评价记录</button></div></div><p id="reviewContext" class="muted"></p>
+<p class="muted">运行秒数为压缩教学时间，不等同于临床经过时间。下列行为和评分由导师确认；无记录不自动认定操作失败。</p>
+<div class="review-grid"><section><h3>异常识别</h3><div id="recognitionReview"></div></section><section><h3>关键动作遗漏</h3><div id="actionsReview"></div></section></div>
+<h3>成绩与延迟复测（导师录入）</h3><div class="form-grid"><label>场次／匿名学员代号<input id="assessmentCode" maxlength="100" placeholder="例如 A组-01"></label><label>训练前成绩（%）<input id="scorePre" type="number" min="0" max="100"></label><label>即时成绩（%）<input id="scorePost" type="number" min="0" max="100"></label><label>延迟复测成绩（%）<input id="scoreDelayed" type="number" min="0" max="100"></label><label>复测间隔（天）<input id="delayDays" type="number" min="1" max="365"></label><label>满意度（辅助，1—5）<input id="satisfaction" type="number" min="1" max="5"></label></div><p class="muted">建议跨场次使用同一评分标准和匿名代号。此版本记录分数，不宣称已验证教学有效性；导出记录后，可在复测时导入补充成绩。</p><div class="controls"><button id="saveAssessment">保存本场评价</button><label class="file-button">导入演练记录补充复测<input type="file" id="importSession" accept=".json,application/json"></label></div><p id="reviewMessage" role="status"></p>
+<h3>事件时间线</h3><div id="timeline" class="timeline"></div></section>
+<footer>仅用于模拟教学 · 通用合成声音 · 当前病例配置与行为记录分开保存 · 原有四套监护仪仍可独立使用</footer>
+<section id="panel-importer" class="panel light-panel" hidden>
+<h2>从病例文本生成演练草案</h2><p>本地文本规则识别，无需上传。请先去除患者身份信息。使用“阶段一：基线”“阶段二：异常”等独立标题，可自动拆分阶段。</p>
+<label>病例名称 <input id="textCaseTitle" value="导入教学病例" maxlength="100"></label>
+<p><label class="file-button">导入TXT / Markdown<input id="textCaseFile" type="file" accept=".txt,.md,text/plain,text/markdown"></label> Word、PDF请复制文字粘贴。</p>
+<textarea id="textCaseBody" rows="14" maxlength="60000" style="width:100%;box-sizing:border-box" aria-label="去标识化病例原文" placeholder="阶段一：基线&#10;HR 75，BP 120/75 mmHg，SpO₂ 99%，EtCO₂ 35 mmHg，核心温 36.8℃，RR 12"></textarea>
+<div class="controls"><button id="recognizeCase" class="primary">识别并预览</button><button id="exampleCase">载入虚构示例</button></div>
+<p id="textImportMessage" role="status"></p><div id="textImportPreview" style="overflow-x:auto"></div>
+<p><label><input id="textImportChecked" type="checkbox">我已核对阶段、数值、单位与缺失项，生成可编辑教学草案</label></p>
+<button id="generateTextCase" class="primary" disabled>生成并进入病例编辑</button>
+<p class="muted">同一阶段多个数值、缺失数值留空；不跨阶段继承参数。补齐所有节点参数后才能应用、保存或导出。信号测不出不等于数值为零。不会自动生成诊断、用药、动作清单或报警阈值。</p>
+</section>
+</main><script src="cases.js"></script><script src="model.js"></script><script src="case-importer.js"></script><script src="intervention-model.js"></script><script src="workspace-layout.js"></script><script src="studio.js"></script><script src="text-import-ui.js"></script><script src="intervention-ui.js"></script></body></html>
