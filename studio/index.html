@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>围术期情景模拟工作台</title><link rel="stylesheet" href="studio.css"><link rel="stylesheet" href="intervention.css"></head>
 <body><main id="studio">
-<header class="studio-header"><div><div class="eyebrow">L&L AI STUDIO / RESIDENCY TRAINING</div><h1>围术期情景模拟工作台 <small>v0.5.1 本地原型</small></h1></div><label class="case-picker">病例库<select id="caseSelect" aria-label="选择病例"></select></label></header>
+<header class="studio-header"><div><div class="eyebrow">L&L AI STUDIO / RESIDENCY TRAINING</div><h1>围术期情景模拟工作台 <small>v0.6.0 本地原型</small></h1></div><label class="case-picker">病例库<select id="caseSelect" aria-label="选择病例"></select></label></header>
 <nav class="studio-nav" aria-label="工作区"><button data-tab="monitor" aria-pressed="true">演练监护</button><button data-tab="editor" aria-pressed="false">病例编辑</button><button data-tab="review" aria-pressed="false">记录与评价</button><button data-tab="importer" aria-pressed="false">病例识别</button><span id="caseStatus">教学草案</span></nav>
 <p id="notice" role="status" class="notice">正在载入病例…</p>
 <section id="panel-monitor" class="panel"><div id="monitorShell">
@@ -12,7 +12,7 @@
 <div class="wave"><span class="wave-label art" id="bpWaveLabel">ART</span><svg id="wave-art" role="img" aria-label="有创动脉压示意波形"><path/></svg><small id="artScale">未启用</small></div><div class="metric art"><span id="bpLabel">BP</span><div><strong id="bp" class="bp">—</strong><small id="bpDetail"></small></div></div>
 <div class="wave"><span class="wave-label pleth">SpO₂ · PLETH</span><svg id="wave-pleth" role="img" aria-label="血氧脉搏容积示意波形"><path/></svg><small id="signalLabel">信号可读</small></div><div class="metric pleth"><span>SpO₂<small>%</small></span><strong id="spo">—</strong></div>
 <div class="wave"><span class="wave-label co2">CO₂</span><svg id="wave-co2" role="img" aria-label="梯形呼气末二氧化碳示意波形"><path/></svg><small id="co2Scale">mmHg</small></div><div class="metric co2"><span>EtCO₂<small>mmHg</small></span><strong id="et">—</strong></div>
-<div class="vent-row"><span>通气状态 <b id="vent"></b></span><span>RR <b id="rr"></b> 次/分（设定）</span></div><div class="metric airway-pressure"><span>气道峰压<small>Ppeak · cmH₂O</small><small>场景值</small></span><strong id="ppeak">—</strong></div>
+<div class="vent-row"><span>通气状态 <b id="vent"></b></span><span>RR <b id="rr"></b> 次/分（设定）</span><span id="resuscitationClock" hidden></span></div><div class="metric airway-pressure"><span>气道峰压<small>Ppeak · cmH₂O</small><small>场景值</small></span><strong id="ppeak">—</strong></div>
 <div class="monitor-context"><small id="monitorState"></small></div><div class="metric temp"><span>核心温<small>℃</small></span><strong id="temp">—</strong></div>
 </div>
 <div class="monitor-toolbar"><button id="sound" aria-pressed="false">开启声音</button><label>音量<input type="range" id="volume" min="0" max="100" value="25" aria-label="音量"></label><button id="pause" aria-pressed="false">暂停</button><button id="fullscreen" aria-pressed="false">全屏</button><button id="hideDirector" aria-pressed="false">收起导师侧栏</button></div>

@@ -1,19 +1,19 @@
 {
   "name": "围术期情景模拟工作台",
-  "version": "0.5.1",
-  "caseCount": 5,
+  "version": "0.6.0",
+  "caseCount": 6,
   "files": {
-    "index.html": "ccecff6402916687acecbe53418102b6fbf786abcb58acff93c1e03d1a3ccbc8",
+    "index.html": "6bdad37bcbb127968a9009a487a390efc92389be96bea7615bf81ef891ff41d0",
     "studio.css": "6f2955c1a9de22e43d29ee336c044b7aa2b848c4fda67ab3e4d30d073bbf0007",
-    "studio.js": "eea10f99599a3261e5f4215df99e8b163ee84acba8020539f3e3b61615fe253c",
-    "model.js": "ee5cb8f4cf164bd236eb23c3fa326a8598965ef9a0ad2da9ab7125b183038125",
+    "studio.js": "72543b02e400e5c1d5018f43baeaa8ec633f05342735af67187758743d84907d",
+    "model.js": "391e3e4cc9673836b1c93c846bd498e5f29feaf89820bbdead90c274fba8f64d",
     "case-importer.js": "cb91a944f4325924d28588b7a786eb574e542e473f0b1f1b0471435b9075c8d4",
     "text-import-ui.js": "ae2e451273514c3aeca3d09c1d91a07c3622fcb3400a2c553bafd8bdbb031527",
-    "workspace-layout.js": "12ec033129058e5bbe8eba6e0d572f4947733660202c1cf4f3d2408243909b0e",
-    "intervention-model.js": "1585e50644be3e4f88174e8a280856cb8450f7e4fd3b78b7ba433f57efd9e2ed",
-    "intervention-ui.js": "6d64eb247ec3a6024b6f4b16ea64da0fde801a36f50c6e98f889394e84269a1f",
-    "intervention.css": "bf5ffca2a2e76148b9cbe179e72475701239fea02975a23eb3111215296100e2",
-    "cases.js": "08fa3c6549bfbb53f5f2aa5dc704215bd03aa60f53c067493f52f2f557242a3e"
+    "workspace-layout.js": "d4a3b95d55d03763ce621e7a8deb02e08cf2a6b51406ea57796b6d4e13875c5b",
+    "intervention-model.js": "675db406f982a00b6807e5817c854293fb550633faa196c1325b9f05eaaccecc",
+    "intervention-ui.js": "2e1a05909d28a9b9167a16b649476e6cf284325e6be0d1bd047aaab4bf01e12a",
+    "intervention.css": "7dd2ea8e1eeffa9b646d0521e00c0ec885dbb856ec00b6541b7ea9d5085e6e05",
+    "cases.js": "1eb8439e86d02a4d7ae8fd11fd355d0c52fc0a6049e375540ff2465465e4cf44"
   },
   "scope": "Teaching draft. No automatic drug effect. No patient data upload."
 }
